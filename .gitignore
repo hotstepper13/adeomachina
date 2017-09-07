@@ -2,11 +2,9 @@
 .gradle
 /local.properties
 .idea
-/.idea/*
+.idea/*
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-/.idea/
 app/libs/
-app/src/main/res/drawable/

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/background"
     tools:context="de.hotstepper13.latinsucks.Raffle">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -16,40 +16,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/check"
+        <TextView
+            android:id="@+id/highscoreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="196dp"
-            android:text="Prüfen" />
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Highscore:"
+            android:textColor="@color/text"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
 
         <TextView
-            android:id="@+id/question"
-            android:padding="12dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
+            android:id="@+id/highscore"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/check"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="false"
-            android:layout_marginBottom="86dp"
-            android:text="Lorem ipsum dolor sit amet"
-            android:textAppearance="@android:style/TextAppearance.Large" />
-
-        <EditText
-            android:id="@+id/answer"
-            android:padding="12dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/check"
-            android:layout_alignEnd="@+id/question"
-            android:layout_alignStart="@+id/question"
-            android:layout_marginBottom="32dp"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            android:text="0"
+            android:textColor="@color/text"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_alignBaseline="@+id/highscoreText"
+            android:layout_toRightOf="@+id/CurrentText"
+            android:layout_marginLeft="42dp"/>
 
         <TextView
             android:id="@+id/CurrentText"
@@ -57,37 +44,72 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/highscoreText"
             android:layout_below="@+id/highscoreText"
+            android:textColor="@color/text"
             android:text="Current:"
-            android:textAppearance="@android:style/TextAppearance.Large" />
-
-        <TextView
-            android:id="@+id/highscoreText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="19dp"
-            android:layout_marginTop="32dp"
-            android:layout_toStartOf="@+id/check"
-            android:text="Highscore:"
-            android:textAppearance="@android:style/TextAppearance.Large" />
-
-        <TextView
-            android:id="@+id/highscore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:layout_above="@+id/currentScores"
-            android:layout_alignStart="@+id/currentScores" />
+            android:textAppearance="@android:style/TextAppearance.Medium" />
 
         <TextView
             android:id="@+id/currentScores"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_alignBaseline="@+id/CurrentText"
+            android:textColor="@color/text"
+            android:layout_toRightOf="@+id/CurrentText"
+            android:layout_marginLeft="42dp" />
+
+        <Button
+            android:id="@+id/reset"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:text="Reset Highscore"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:background="@drawable/roundedbutton"
+            android:textColor="@color/buttontext"
+            android:layout_below="@+id/check"/>
+
+        <TextView
+            android:id="@+id/question"
+            android:padding="12dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="false"
+            android:text="Lorem ipsum dolor sit amet"
             android:textAppearance="@android:style/TextAppearance.Large"
-            android:layout_below="@+id/highscoreText"
-            android:layout_toStartOf="@+id/check" />
+            android:textColor="@color/text"
+            android:layout_below="@+id/CurrentText"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/answer"
+            android:padding="12dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text|textNoSuggestions"
+            android:textColor="@color/input"
+            android:backgroundTint="@color/inputline"
+            android:layout_below="@+id/question"
+            android:textCursorDrawable="@null" />
+
+        <Button
+            android:id="@+id/check"A6
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Prüfen"
+            android:textColor="@color/buttontext"
+            android:layout_below="@+id/answer"
+            android:background="@drawable/roundedbutton"/>
+
     </RelativeLayout>
 
 </FrameLayout>

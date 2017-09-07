@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <!-- 3F51B5 -->
+    <!-- headline -->
+    <color name="colorPrimary">#6C6E58</color>
+    <!-- statusbar -->
+    <color name="colorPrimaryDark">#3E423A</color>
+
     <color name="colorAccent">#FF4081</color>
+    <color name="background">#3E423A</color>
+    <color name="text">#F4F7D9</color>
+    <color name="buttonbg">#417378</color>
+    <color name="buttontext">#A4CFBE</color>
+
+    <color name="input">#ffffff</color>
+    <color name="inputline">#ffffff</color>
+
+    <!--
+    #417378 = dark
+    #A4CFBE = light
+    -->
+
 </resources>

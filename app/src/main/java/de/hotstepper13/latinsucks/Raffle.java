@@ -24,6 +24,7 @@ public class Raffle extends AppCompatActivity {
     TextView current;
     EditText answer;
     Button submit;
+    Button reset;
 
     private static final String PREFS_NAME = "TranslationHighscorePrefs";
     private static TranslationVO currentTranslation;
@@ -46,6 +47,7 @@ public class Raffle extends AppCompatActivity {
         current = (TextView) findViewById(R.id.currentScores);
         answer = (EditText) findViewById(R.id.answer);
         submit = (Button) findViewById(R.id.check);
+        reset = (Button) findViewById(R.id.reset);
 
 
         highscore.setText(getHighScore()+"");
@@ -78,6 +80,15 @@ public class Raffle extends AppCompatActivity {
             }
         });
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setHighScore(0);
+                highscore.setText(getHighScore()+"");
+                currentScore = 0;
+                current.setText(currentScore+"");
+            }
+        });
     }
 
     private TranslationVO getRandomTranslation() {
