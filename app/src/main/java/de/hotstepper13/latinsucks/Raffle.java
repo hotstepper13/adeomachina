@@ -82,8 +82,8 @@ public class Raffle extends AppCompatActivity {
 
     private TranslationVO getRandomTranslation() {
         Random generator = new Random();
-        int i = generator.nextInt(this.translations.size()-1);
-        return this.translations.get(i);
+        int i = generator.nextInt(Raffle.translations.size()-1);
+        return Raffle.translations.get(i);
     }
 
     private void getTranslationsFromAssets() {
@@ -93,8 +93,8 @@ public class Raffle extends AppCompatActivity {
             reader.readLine();
             String line;
             StringTokenizer st = null;
-            if(this.translations == null) {
-                this.translations = new ArrayList<TranslationVO>();
+            if(Raffle.translations == null) {
+                Raffle.translations = new ArrayList<TranslationVO>();
             }
             while ((line = reader.readLine()) != null) {
                 st = new StringTokenizer(line, ",");
