@@ -1,18 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0099cc"
     tools:context="de.hotstepper13.latinsucks.Raffle">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
 
-</android.support.constraint.ConstraintLayout>
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="196dp"
+            android:text="Prüfen" />
+
+        <TextView
+            android:id="@+id/question"
+            android:padding="12dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/check"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="false"
+            android:layout_marginBottom="86dp"
+            android:text="Lorem ipsum dolor sit amet"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <EditText
+            android:id="@+id/answer"
+            android:padding="12dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/check"
+            android:layout_alignEnd="@+id/question"
+            android:layout_alignStart="@+id/question"
+            android:layout_marginBottom="32dp"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/CurrentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/highscoreText"
+            android:layout_below="@+id/highscoreText"
+            android:text="Current:"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <TextView
+            android:id="@+id/highscoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="19dp"
+            android:layout_marginTop="32dp"
+            android:layout_toStartOf="@+id/check"
+            android:text="Highscore:"
+            android:textAppearance="@android:style/TextAppearance.Large" />
+
+        <TextView
+            android:id="@+id/highscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:layout_above="@+id/currentScores"
+            android:layout_alignStart="@+id/currentScores" />
+
+        <TextView
+            android:id="@+id/currentScores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:layout_below="@+id/highscoreText"
+            android:layout_toStartOf="@+id/check" />
+    </RelativeLayout>
+
+</FrameLayout>
