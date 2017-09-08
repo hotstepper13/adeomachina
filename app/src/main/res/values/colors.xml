@@ -15,6 +15,9 @@
     <color name="input">#ffffff</color>
     <color name="inputline">#ffffff</color>
 
+    <color name="transparentWhite">#ccffffff</color>
+    <color name="wrongText">#000000</color>
+
     <!--
     #417378 = dark
     #A4CFBE = light
