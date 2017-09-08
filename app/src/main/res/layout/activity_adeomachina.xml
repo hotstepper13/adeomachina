@@ -90,7 +90,7 @@
 
         <EditText
             android:id="@+id/answer"
-            android:imeOptions="flagNoExtractUi"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:ems="10"
             android:padding="12dp"
             android:gravity="center"

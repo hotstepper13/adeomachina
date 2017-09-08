@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ public class AdeoMachina extends AppCompatActivity {
     public static int highscoreValue;
     public static int currentScore;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,34 +55,13 @@ public class AdeoMachina extends AppCompatActivity {
         reset = (Button) findViewById(R.id.reset);
         wrongDialog = new Dialog(AdeoMachina.this);
 
-        highscore.setText(getHighScore()+"");
+        highscore.setText(getHighScore() + "");
         question.setText(currentTranslation.getQuestion());
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView question = (TextView) findViewById(R.id.question);
-                TextView current = (TextView) findViewById(R.id.currentScores);
-                EditText answer = (EditText) findViewById(R.id.answer);
-
-                if (answer.getText().toString().toLowerCase().equals(currentTranslation.getAnswer().toLowerCase())) {
-                    Toast.makeText(AdeoMachina.this, "Richtig!", Toast.LENGTH_SHORT).show();
-                    currentScore++;
-                    if(currentScore > getHighScore()) {
-                        setHighScore(currentScore);
-                        highscore.setText(getHighScore()+"");
-                    }
-                    current.setText(currentScore+"");
-                } else {
-                    showWrongDialog();
-                    //Toast.makeText(AdeoMachina.this, "Leider falsch!\n (" + currentTranslation.getAnswer() + ")" , Toast.LENGTH_SHORT).show();
-                    currentScore = 0;
-                    current.setText("0");
-                }
-                currentTranslation = getRandomTranslation();
-                question.setText(currentTranslation.getQuestion());
-                answer.setText("");
-
+                checkAnswer();
             }
         });
 
@@ -93,18 +75,43 @@ public class AdeoMachina extends AppCompatActivity {
             }
         });
         
-        answer.setOnEditorActionListener(new OnEditorActionListener() {
+        answer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    sendMessage();
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    checkAnswer();
                     handled = true;
                 }
                 return handled;
             }
         });
         
+    }
+
+
+    private void checkAnswer() {
+        TextView question = (TextView) findViewById(R.id.question);
+        TextView current = (TextView) findViewById(R.id.currentScores);
+        EditText answer = (EditText) findViewById(R.id.answer);
+
+        if (answer.getText().toString().toLowerCase().equals(currentTranslation.getAnswer().toLowerCase())) {
+            Toast.makeText(AdeoMachina.this, "Richtig!", Toast.LENGTH_SHORT).show();
+            currentScore++;
+            if(currentScore > getHighScore()) {
+                setHighScore(currentScore);
+                highscore.setText(getHighScore()+"");
+            }
+            current.setText(currentScore+"");
+        } else {
+            showWrongDialog();
+            //Toast.makeText(AdeoMachina.this, "Leider falsch!\n (" + currentTranslation.getAnswer() + ")" , Toast.LENGTH_SHORT).show();
+            currentScore = 0;
+            current.setText("0");
+        }
+        currentTranslation = getRandomTranslation();
+        question.setText(currentTranslation.getQuestion());
+        answer.setText("");
     }
 
     private TranslationVO getRandomTranslation() {

@@ -18,6 +18,8 @@
     <color name="transparentWhite">#ccffffff</color>
     <color name="wrongText">#000000</color>
 
+    <color name="fulltransparent">#00ffffff</color>
+
     <!--
     #417378 = dark
     #A4CFBE = light
