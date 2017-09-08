@@ -92,6 +92,19 @@ public class AdeoMachina extends AppCompatActivity {
                 current.setText(currentScore+"");
             }
         });
+        
+        answer.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    sendMessage();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+        
     }
 
     private TranslationVO getRandomTranslation() {
