@@ -1,4 +1,4 @@
-package de.hotstepper13.latinsucks;
+package de.hotstepper13.adeomachina;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("de.hotstepper13.latinsucks", appContext.getPackageName());
+        assertEquals("de.hotstepper13.adeomachina", appContext.getPackageName());
     }
 }

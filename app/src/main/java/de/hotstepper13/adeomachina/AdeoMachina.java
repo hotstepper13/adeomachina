@@ -1,4 +1,4 @@
-package de.hotstepper13.latinsucks;
+package de.hotstepper13.adeomachina;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
@@ -19,11 +19,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
-import de.hotstepper13.latinsucks.vo.TranslationVO;
+import de.hotstepper13.adeomachina.vo.TranslationVO;
 
 public class AdeoMachina extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextView question;

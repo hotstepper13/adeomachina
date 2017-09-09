@@ -1,4 +1,4 @@
-package de.hotstepper13.latinsucks;
+package de.hotstepper13.adeomachina;
 
 import org.junit.Test;
 

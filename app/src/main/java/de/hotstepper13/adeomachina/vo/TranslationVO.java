@@ -1,9 +1,4 @@
-package de.hotstepper13.latinsucks.vo;
-
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
-import de.hotstepper13.latinsucks.AdeoMachina;
+package de.hotstepper13.adeomachina.vo;
 
 /**
  * Created by fmuell on 04.09.17.
