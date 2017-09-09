@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +21,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
+import java.util.concurrent.ThreadLocalRandom;
 
 import de.hotstepper13.latinsucks.vo.TranslationVO;
 
-public class AdeoMachina extends AppCompatActivity {
+public class AdeoMachina extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextView question;
     TextView highscore;
     TextView current;
@@ -30,9 +34,11 @@ public class AdeoMachina extends AppCompatActivity {
     Button reset;
     Dialog wrongDialog;
 
-    private static final String PREFS_NAME = "TranslationHighscorePrefs";
+    private static final String TRANSLATION_FILE = "adeo-norm-extract.csv";
+    private static final String PREFS_NAME = "TranslationPrefs";
+    private static int currentMaxPage;
     private static TranslationVO currentTranslation;
-    private static ArrayList<TranslationVO> translations;
+    private static ArrayList<ArrayList<TranslationVO>> translations;
     public static int highscoreValue;
     public static int currentScore;
 
@@ -43,8 +49,13 @@ public class AdeoMachina extends AppCompatActivity {
 
         this.getTranslationsFromAssets();
         highscoreValue = this.getHighScore();
-        currentTranslation = this.getRandomTranslation();
+        if(getPage() > 0) {
+            currentMaxPage = getPage();
+        } else {
+            currentMaxPage = translations.size() - 1;
+        }
 
+        currentTranslation = this.getRandomTranslation();
 
         setContentView(R.layout.activity_adeomachina);
         question = (TextView) findViewById(R.id.question);
@@ -55,8 +66,10 @@ public class AdeoMachina extends AppCompatActivity {
         reset = (Button) findViewById(R.id.reset);
         wrongDialog = new Dialog(AdeoMachina.this);
 
+        this.activateSpinner();
+
         highscore.setText(getHighScore() + "");
-        question.setText(currentTranslation.getQuestion());
+        question.setText("(" + currentTranslation.getPage() + ") " + currentTranslation.getQuestion());
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +108,9 @@ public class AdeoMachina extends AppCompatActivity {
         TextView current = (TextView) findViewById(R.id.currentScores);
         EditText answer = (EditText) findViewById(R.id.answer);
 
-        if (answer.getText().toString().toLowerCase().equals(currentTranslation.getAnswer().toLowerCase())) {
+        String theAnswer = answer.getText().toString();
+
+        if (currentTranslation.checkAnswer(theAnswer)) {
             Toast.makeText(AdeoMachina.this, "Richtig!", Toast.LENGTH_SHORT).show();
             currentScore++;
             if(currentScore > getHighScore()) {
@@ -104,50 +119,60 @@ public class AdeoMachina extends AppCompatActivity {
             }
             current.setText(currentScore+"");
         } else {
-            showWrongDialog();
-            //Toast.makeText(AdeoMachina.this, "Leider falsch!\n (" + currentTranslation.getAnswer() + ")" , Toast.LENGTH_SHORT).show();
+            showWrongDialog(theAnswer);
             currentScore = 0;
             current.setText("0");
         }
         currentTranslation = getRandomTranslation();
-        question.setText(currentTranslation.getQuestion());
+        question.setText("(" + currentTranslation.getPage() + ") " + currentTranslation.getQuestion());
         answer.setText("");
     }
 
     private TranslationVO getRandomTranslation() {
-        Random generator = new Random();
-        int i = generator.nextInt(AdeoMachina.translations.size()-1);
-        return AdeoMachina.translations.get(i);
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int page = ThreadLocalRandom.current().nextInt(1, AdeoMachina.currentMaxPage + 1);
+        int entry = ThreadLocalRandom.current().nextInt(0, AdeoMachina.translations.get(page).size());
+        return AdeoMachina.translations.get(page).get(entry);
     }
 
     private void getTranslationsFromAssets() {
         try {
-            InputStreamReader is = new InputStreamReader(getAssets().open("translations.csv"));
+            InputStreamReader is = new InputStreamReader(getAssets().open(TRANSLATION_FILE));
             BufferedReader reader = new BufferedReader(is);
             reader.readLine();
             String line;
             StringTokenizer st = null;
             if(AdeoMachina.translations == null) {
-                AdeoMachina.translations = new ArrayList<TranslationVO>();
+                AdeoMachina.translations = new ArrayList<ArrayList<TranslationVO>>();
+                AdeoMachina.translations.add(0,new ArrayList<TranslationVO>());
             }
-            while ((line = reader.readLine()) != null) {
-                st = new StringTokenizer(line, ",");
-                TranslationVO tvo = new TranslationVO(st.nextToken(),st.nextToken());
-                AdeoMachina.translations.add(tvo);
-                tvo = null;
+            while ((line = reader.readLine()) != null ) {
+                if(!line.startsWith("#")) {
+                    TranslationVO tvo = new TranslationVO(line);
+                    if(tvo.getPage() > 0) {
+                        if(AdeoMachina.translations.size() > tvo.getPage() &&  AdeoMachina.translations.get(tvo.getPage()) != null ) {
+                            AdeoMachina.translations.get(tvo.getPage()).add(tvo);
+                        } else {
+                            ArrayList<TranslationVO> altemp = new ArrayList<TranslationVO>();
+                            altemp.add(tvo);
+                            AdeoMachina.translations.add(tvo.getPage(),altemp);
+                        }
+                    }
+                }
             }
         } catch (IOException ioe) {
             System.out.println("Error while reading translations! " + ioe.toString());
         }
     }
 
-    private void showWrongDialog() {
+    private void showWrongDialog(String theAnswer) {
         wrongDialog.setContentView(R.layout.wrong_dialog);
         wrongDialog.getWindow().setBackgroundDrawableResource(R.color.transparentWhite);
         wrongDialog.setTitle("Das war leider falsch!");
         wrongDialog.setCancelable(true);
         TextView text = (TextView) wrongDialog.findViewById(R.id.TextView01);
-        text.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nibh libero, eleifend eu urna ut, sodales sodales ante. Aliquam erat volutpat. Sed vitae lacinia diam. Aliquam ut nulla aliquam, fermentum turpis vitae, interdum tortor. Aliquam eleifend nisi odio. Donec malesuada purus ut tellus ultrices, id pulvinar mi mollis. Nulla mollis nisl vitae nunc fringilla porttitor. In faucibus imperdiet vestibulum. Cras sed hendrerit neque. Morbi faucibus nulla sed felis bibendum pretium eget sed turpis. Nam venenatis porta erat, non bibendum erat volutpat vitae. Sed convallis augue leo, ut euismod massa dictum pharetra. Nam tincidunt ultricies viverra. Integer vehicula ultricies mi efficitur fringilla. Aenean dictum sed orci vitae scelerisque. Nunc volutpat sem sit amet massa consequat, ac dapibus mauris rutrum.");
+        text.setText(formatAnswer(theAnswer) + currentTranslation.getAnswers() + currentTranslation.getDeclination() + currentTranslation.getExamples());
         Button button = (Button) wrongDialog.findViewById(R.id.Button01);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +181,11 @@ public class AdeoMachina extends AppCompatActivity {
             }
         });
         wrongDialog.show();
+    }
+
+    private String formatAnswer(String input) {
+        String result = "Deine Antwort: \"" + input + "\"\n";
+        return result + "\n";
     }
 
     private void setHighScore(int number) {
@@ -168,5 +198,41 @@ public class AdeoMachina extends AppCompatActivity {
         return prefs.getInt("highscore", 0);
     }
 
+    private void setPage(int number) {
+        SharedPreferences.Editor prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        prefs.putInt("page", number).apply();
+    }
+
+    private int getPage() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getInt("page", translations.size()-1);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        setPage(pos+1);
+        AdeoMachina.currentMaxPage = pos+1;
+        AdeoMachina.currentTranslation = getRandomTranslation();
+        question.setText("(" + currentTranslation.getPage() + ") " + currentTranslation.getQuestion());
+        answer.setText("");
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        //do nothing
+    }
+
+    private void activateSpinner() {
+        Spinner dropdown = (Spinner)findViewById(R.id.maxPages);
+        String[] items = new String[translations.size()-1];
+        for(int i=1;i<translations.size();i++) {
+            items[i-1]="Seite " + i;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
+        dropdown.setSelection(adapter.getPosition("Seite " + currentMaxPage));
+        dropdown.setOnItemSelectedListener(this);
+
+    }
 
 }
